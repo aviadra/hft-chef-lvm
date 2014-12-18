@@ -1,11 +1,13 @@
 hft-chef-lvm Cookbook
 =====================
-This cookbook is used to create LVMs. If it is running on AWS/EC2, it can also request disks automatically
+This cookbook is used to create LVMs. If it is running on AWS/EC2, it can also request disks automatically.
+If you're on AWS, and you need the array to be backed up, you will also need the "hft-chef-ebs-backup" cookbook.
 
 Usage
 -----
 When using the cookbook, you need to include it in the runlist (we "cuttingly" do it by adding it to the role).
-We've designed it so that when a VG is created, the LV on top of it will take 100% of its space. Also, currently, only 1 LV creation on a VG is supported.
+We've designed it so that when a VG is created, the LV on top of it will take 100% of its space. 
+Currently, only 1 LV creation on a VG is supported.
 
 Requirements
 ------------
