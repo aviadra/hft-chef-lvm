@@ -107,8 +107,8 @@ node['hft-chef-lvm']['arrays'].each do |(lvm_array_name,lvm_array_parms)|
 		end
 	end
 
-	Chef::Log.info("hft-chef-lvm - Eval for " + Chef::Config[:node_name].to_s + " AWS is:  node[hft-chef-lvm][using_aws] = " + using_aws.to_s + ", on_premise is: "+ node['adallom_base']['on_premise'].to_s + ", attribute is: " + node.attribute?("adallom_role").to_s + " and role is: "+ node["adallom_role"].to_s )
-	if ((node['adallom_base']['on_premise'] == 0 and !node.attribute?("adallom_role") and node["adallom_role"] != "AllInOne") or using_aws == true) and !aws_attributes_ebs_volume_name.nil?
+	Chef::Log.info("hft-chef-lvm - Eval for " + Chef::Config[:node_name].to_s + " AWS is:  node[hft-chef-lvm][using_aws] = " + using_aws.to_s )
+	if using_aws == true and !aws_attributes_ebs_volume_name.nil?
 		Chef::Log.info("hft-chef-lvm - Found this machine " + Chef::Config[:node_name].to_s + " to be AWS eligible")
 		Chef::Log.info("hft-chef-lvm - for lvm_array_name: " + lvm_array_name.to_s + " aws_attributes_ebs_volume_name: " + aws_attributes_ebs_volume_name.to_s)
 		Chef::Log.info("hft-chef-lvm - for lvm_array_name: " + lvm_array_name.to_s + " aws_attributes_volsize: " + aws_attributes_volsize.to_s)
@@ -235,21 +235,21 @@ node['hft-chef-lvm']['arrays'].each do |(lvm_array_name,lvm_array_parms)|
 		end
 		#Should this logical volume group be backed-up?
 			if aws_attributes_snapshot_backup == true
-				Chef::Log.info("hft-chef-lvm - Adallom_backups - for lvm_array_name: " + lvm_array_name.to_s + " invoking backup, because aws_attributes_snapshot_backup was: " + aws_attributes_snapshot_backup.to_s)
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group]["location"] = lvm_attributes_volume_group
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group]["type"] = "LVM"
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group]["pre_backup_cmd"] = aws_attributes_snapshot_pre_backup_cmds
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group]["post_backup_cmd"] = aws_attributes_snapshot_post_backup_cmds
-				Chef::Log.info("hft-chef-lvm - Adallom_backups - Done a node set for adallom_backup.devices_to_backup." + lvm_attributes_volume_group.to_s + ". Location: " + lvm_attributes_volume_group.to_s + ", Type: r, aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_pre_backup_cmds.to_s + " and aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_post_backup_cmds.to_s)
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["location"] = lvm_attributes_physical_volumes
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["type"] = "r"
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["pre_backup_cmd"] = aws_attributes_snapshot_pre_backup_cmds
-				node.set["adallom_backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["post_backup_cmd"] = aws_attributes_snapshot_post_backup_cmds
-				Chef::Log.info("hft-chef-lvm - Adallom_backups - Done a node set for adallom_backup.devices_to_backup." + lvm_attributes_volume_group.to_s + "_physical. Location: " + lvm_attributes_physical_volumes.to_s + ", Type: r, aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_pre_backup_cmds.to_s + " and aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_post_backup_cmds.to_s)
+				Chef::Log.info("hft-chef-lvm - hft-chef-ebs-backup - for lvm_array_name: " + lvm_array_name.to_s + " invoking backup, because aws_attributes_snapshot_backup was: " + aws_attributes_snapshot_backup.to_s)
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group]["location"] = lvm_attributes_volume_group
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group]["type"] = "LVM"
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group]["pre_backup_cmd"] = aws_attributes_snapshot_pre_backup_cmds
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group]["post_backup_cmd"] = aws_attributes_snapshot_post_backup_cmds
+				Chef::Log.info("hft-chef-lvm - hft-chef-ebs-backup - Done a node set for hft-chef-ebs-backup.devices_to_backup." + lvm_attributes_volume_group.to_s + ". Location: " + lvm_attributes_volume_group.to_s + ", Type: r, aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_pre_backup_cmds.to_s + " and aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_post_backup_cmds.to_s)
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["location"] = lvm_attributes_physical_volumes
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["type"] = "r"
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["pre_backup_cmd"] = aws_attributes_snapshot_pre_backup_cmds
+				node.set["hft-chef-ebs-backup"]["devices_to_backup"][lvm_attributes_volume_group + "_physical"]["post_backup_cmd"] = aws_attributes_snapshot_post_backup_cmds
+				Chef::Log.info("hft-chef-lvm - hft-chef-ebs-backup - Done a node set for hft-chef-ebs-backup.devices_to_backup." + lvm_attributes_volume_group.to_s + "_physical. Location: " + lvm_attributes_physical_volumes.to_s + ", Type: r, aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_pre_backup_cmds.to_s + " and aws_attributes_snapshot_pre_backup_cmds: " + aws_attributes_snapshot_post_backup_cmds.to_s)
 
 				node.save
-				include_recipe "adallom_backup"
-				Chef::Log.info("hft-chef-lvm - Adallom_backups - invoked backup with lvm_attributes_volume_group of: " + lvm_attributes_volume_group.to_s + " and lvm_attributes_physical_volumes of: " + lvm_attributes_physical_volumes.to_s)
+				include_recipe "hft-chef-ebs-backup"
+				Chef::Log.info("hft-chef-lvm - hft-chef-ebs-backup - invoked backup with lvm_attributes_volume_group of: " + lvm_attributes_volume_group.to_s + " and lvm_attributes_physical_volumes of: " + lvm_attributes_physical_volumes.to_s)
 			end
 	else
 		Chef::Log.info("hft-chef-lvm - for lvm_array_name: " + lvm_array_name.to_s + " There are insufficient LVM attributes configured to create the array, so creating the LVM was skipped")
