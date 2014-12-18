@@ -9,6 +9,8 @@ When using the cookbook, you need to include it in the runlist (we "cuttingly" d
 We've designed it so that when a VG is created, the LV on top of it will take 100% of its space. 
 Currently, only 1 LV creation on a VG is supported.
 
+The Cookbook depends on "lvm" and "aws". The "aws" version in question is v1.0.1 by Opscode. The "lvm" is hulu1522's fork at https://github.com/hulu1522/lvm/, Which fixed the resize issue but wasn't merged into opscode yet. Commit "1964ea28064ee705d3a85e387a649dc8a270a9e8".
+
 Requirements
 ------------
 If the node is of type "operational", there are some attributes which are required to be set. They are:
