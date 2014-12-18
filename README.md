@@ -58,32 +58,6 @@ in a role or envirment Json, this would look like:
         },
 
 
-e.g.
-#### adallom_base::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['adallom_base']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
-
-
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[adallom_base]"
-  ]
-}
-```
 
 Contributing
 ------------
